@@ -317,7 +317,7 @@ def delete_docker_new(app_logger, uuidcode, servername, app_urls):
         if r.status_code != 202:
             app_logger.error("uuidcode={} - Could not Delete JupyterLab via DockerMaster".format(uuidcode))
     # Kill the tunnel
-    tunnel_info = { "servername": s_servername }
+    tunnel_info = { "servername": servername }
     try:
         app_logger.debug("uuidcode={} - Close ssh tunnel".format(uuidcode))
         tunnel_communication.close(app_logger,
