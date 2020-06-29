@@ -24,7 +24,7 @@ class SpawningHandler(Resource):
             # Track actions through different webservices.
             uuidcode = request.headers.get('uuidcode', '<no uuidcode>')
             app.log.info("uuidcode={} - Set Spawning".format(uuidcode))
-            app.log.trace("uuidcode={} - Headers: {}".format(uuidcode, request.headers.to_list()))
+            app.log.trace("uuidcode={} - Headers: {}".format(uuidcode, request.headers))
             app.log.trace("uuidcode={} - Json: {}".format(uuidcode, json.dumps(request.json)))
     
             # Check for the J4J intern token
