@@ -21,7 +21,7 @@ class UNICOREXHandler(Resource):
             # Track actions through different webservices.
             uuidcode = request.headers.get('uuidcode', '<no uuidcode>')
             app.log.info("uuidcode={} - Get UNICOREX User".format(uuidcode))
-            app.log.trace("uuidcode={} - Headers: {}".format(uuidcode, request.headers.to_list()))
+            app.log.trace("uuidcode={} - Headers: {}".format(uuidcode, request.headers))
 
             # Check for the J4J intern token
             utils_common.validate_auth(app.log,

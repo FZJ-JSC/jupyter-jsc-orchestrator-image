@@ -127,7 +127,7 @@ class RevokeToken(Resource):
             # Track actions through different webservices.
             uuidcode = request.headers.get('uuidcode', '<no uuidcode>')
             app.log.info("uuidcode={} - Revoke Token".format(uuidcode))
-            app.log.trace("uuidcode={} - Headers: {}".format(uuidcode, request.headers.to_list()))
+            app.log.trace("uuidcode={} - Headers: {}".format(uuidcode, request.headers))
             app.log.trace("uuidcode={} - Json: {}".format(uuidcode, request.json))
             validate_auth(app.log,
                           uuidcode,
