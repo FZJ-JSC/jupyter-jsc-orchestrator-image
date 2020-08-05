@@ -57,7 +57,7 @@ class RevokeToken(Resource):
             client_id = unity_file[token_url]['client_id']
     
             # Revoke all tokens, but these we just sent in the header. Useful when the users logs in. So old tokens will be removed
-            if request_headers.get('allbutthese', 'false').lower() == 'true':
+            if request_headers.get('allbutthese', 'false').lower() == 'true' or request_headers.get('revokeall', 'false').lower() == 'true':
                 admin_tokens = unity_file[token_url]['links'].get('admin_tokens', None)
                 admin_basic_token = unity_file[token_url].get('admin_basic_token', None)
                 immune_tokens = unity_file[token_url].get('immune_tokens', [])
@@ -71,15 +71,18 @@ class RevokeToken(Resource):
                                               uuidcode,
                                               "GET",
                                               method_args)
-                immune_tokens.append(request_json['accesstoken'])
-                immune_tokens.append(request_json['refreshtoken'])
+                logout = 'true'
+                if request_headers.get('allbutthese', 'false').lower() == 'true':
+                    immune_tokens.append(request_json['accesstoken'])
+                    immune_tokens.append(request_json['refreshtoken'])
+                    logout = 'false'
                 dict_only_list = [x for x in all_tokens_list if type(x.get('contents', {})) == dict]
                 to_revoke_list = [x for x in dict_only_list if json.loads(x.get('contents', {}).get('userInfo', '{}')).get('x500name') == username and x.get('value', '') not in immune_tokens]
                 headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
                 method_args = {"url": revoke_url,
                                "headers": headers,
                                "data": {"client_id": client_id,
-                                        "logout": 'false'},
+                                        "logout": logout},
                                "certificate": cert}
                 for token_dict in to_revoke_list:
                     token_type = token_dict.get('type', 'oauth2Access')
