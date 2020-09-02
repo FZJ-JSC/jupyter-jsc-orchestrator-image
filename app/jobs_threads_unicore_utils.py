@@ -53,7 +53,8 @@ def create_header(app_logger, uuidcode, request_headers, app_hub_url_proxy_route
                                       app_hub_token_url,
                                       username,
                                       servername,
-                                      app_database)
+                                      app_database,
+                                      True)
 
     j4j_unicore_header = {"uuidcode": uuidcode,
                           "servername": request_headers.get('servername'),

@@ -16,10 +16,11 @@ from app.utils_db import set_skip
 import json
 
 
-def renew_token(app_logger, uuidcode, token_url, authorize_url, refreshtoken, accesstoken, expire, jhubtoken, app_hub_url_proxy_route, app_hub_token_url, username, servername, app_database):
+def renew_token(app_logger, uuidcode, token_url, authorize_url, refreshtoken, accesstoken, expire, jhubtoken, app_hub_url_proxy_route, app_hub_token_url, username, servername, app_database, force_renew=False):
     try:
-        if int(expire) - time.time() > 480:
-            return accesstoken, expire
+        if not force_renew:
+            if int(expire) - time.time() > 480:
+                return accesstoken, expire
     except:
         app_logger.warning("uuidcode={} - Could not check if token will expire soon. Try to renew token.".format(uuidcode))
     app_logger.info("uuidcode={} - Renew Token".format(uuidcode))

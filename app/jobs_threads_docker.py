@@ -8,6 +8,7 @@ from app import utils_hub_update, utils_db, utils_file_loads,\
 from contextlib import closing
 import requests
 from app.utils_file_loads import get_hdfcloud
+from app.utils_unity import renew_token
 
 
 def check_docker_status_new(app_logger, uuidcode, servername):
@@ -106,11 +107,14 @@ def check_docker_status(app_logger, uuidcode, app_urls, app_database, servername
                            servername,
                            app_database)
 
-def start_docker_new(app_logger, uuidcode, app_database, servername, port, service, dashboard, account, environment, jhubtoken, app_tunnel_url, app_tunnel_url_remote):
+def start_docker_new(app_logger, uuidcode, app_database, request_headers, port, service, dashboard, environment, app_urls):
     """
     Headers:
         intern-authorization
         uuidcode
+        accesstoken
+        expire
+        servicelevel
     Body:
         servername
         email
@@ -119,9 +123,31 @@ def start_docker_new(app_logger, uuidcode, app_database, servername, port, servi
         port
         jupyterhub_api_url
     """
+    servername = request_headers.get('servername')
+    account = request_headers.get('account')
+    jhubtoken = request_headers.get('jhubtoken')
+    servicelevel = request_headers.get('servicelevel', 'default')
+    app_tunnel_url = app_urls.get('tunnel', {}).get('url_tunnel')
+    app_tunnel_url_remote = app_urls.get('tunnel', {}).get('url_remote')
     servername_at = servername.replace('@', '_at_')
     email = servername_at.split(':')[0]
     servername_short = servername_at.split(':')[1]
+    # Users should be allowed to use their access tokens in the JupyterLab. To get a maximum lifespan of this token for the user, we renew it before we're starting the JupyterLab.
+    accesstoken, expire = renew_token(app_logger,
+                                      uuidcode,
+                                      request_headers.get('tokenurl'),
+                                      request_headers.get('authorizeurl'),
+                                      request_headers.get('refreshtoken'),
+                                      request_headers.get('accesstoken'),
+                                      request_headers.get('expire'),
+                                      jhubtoken,
+                                      app_urls.get('hub', {}).get('url_proxy_route'),
+                                      app_urls.get('hub', {}).get('url_token'),
+                                      request_headers.get('escapedusername'),
+                                      servername,
+                                      app_database,
+                                      True)
+    
     dashboards = {}
     if service == "JupyterLab":
         dockerimage = utils_file_loads.image_name_to_image(account)
@@ -146,7 +172,10 @@ def start_docker_new(app_logger, uuidcode, app_database, servername, port, servi
     url = urls.get('dockermaster', {}).get('url_jlab', '<no_jlab_url_defined>')
     headers = {
         "Intern-Authorization": docker_master_token,
-        "uuidcode": uuidcode
+        "uuidcode": uuidcode,
+        "accesstoken": accesstoken,
+        "expire": expire,
+        "servicelevel": servicelevel
         }
     body = {
         "servername": servername_short,
