@@ -25,6 +25,7 @@ from app.skip import SkipHandler
 from app.hostname import HostnameHandler
 from app.revoke import RevokeToken
 from app.database import DatabaseHandler
+from app.usertunnel import UserTunnelHandler
 
 # Who should receive the emails if an error or an exception occures?
 with open('/etc/j4j/j4j_mount/j4j_common/mail_receiver.json') as f:
@@ -148,6 +149,7 @@ api.add_resource(HealthHandler, '/health')
 api.add_resource(SpawningHandler, '/spawning')
 api.add_resource(SkipHandler, '/skip')
 api.add_resource(HostnameHandler, '/hostname')
+api.add_resource(UserTunnelHandler, '/usertunnel')
 api.add_resource(DatabaseHandler, '/database')
 api.add_resource(RevokeToken, '/revoke')
 
