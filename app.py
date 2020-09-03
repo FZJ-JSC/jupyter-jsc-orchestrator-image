@@ -22,6 +22,7 @@ from app.unicorex import UNICOREXHandler
 from app.health import HealthHandler
 from app.spawning import SpawningHandler
 from app.skip import SkipHandler
+from app.hostname import HostnameHandler
 from app.revoke import RevokeToken
 from app.database import DatabaseHandler
 
@@ -146,6 +147,7 @@ api.add_resource(UNICOREXHandler, '/unicorex')
 api.add_resource(HealthHandler, '/health')
 api.add_resource(SpawningHandler, '/spawning')
 api.add_resource(SkipHandler, '/skip')
+api.add_resource(HostnameHandler, '/hostname')
 api.add_resource(DatabaseHandler, '/database')
 api.add_resource(RevokeToken, '/revoke')
 
