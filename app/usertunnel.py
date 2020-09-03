@@ -52,7 +52,7 @@ class UserTunnelHandler(Resource):
     
     def delete_thread(self, app_logger, uuidcode, request_headers, app_urls, app_database):
         username = request_headers.get('username')
-        app_logger.debug("uuidcode={} - Restore tunnels from database for {}".format(uuidcode, username))
+        app_logger.debug("uuidcode={} - Delete tunnels from database for {}".format(uuidcode, username))
         try:
             servernames = utils_db.get_servername_tunnelup_for_user(app_logger, uuidcode, username, app_database)
         except:

@@ -56,10 +56,7 @@ def get_servername_tunnelup_for_user(app_logger, uuidcode, username, database):
                             ("{}:%".format(username), ))
                 results = cur.fetchall()
                 app_logger.trace("uuidcode={} - Results: {}".format(uuidcode, results))
-    ret = []
-    for result in results:
-        ret.append(result[0])
-    return ret
+    return results
                 
 def get_serverinfos_for_user(app_logger, uuidcode, username, database):
     # return list of all servernames
@@ -78,10 +75,7 @@ def get_serverinfos_for_user(app_logger, uuidcode, username, database):
                             ("{}:%".format(username), ))
                 results = cur.fetchall()
                 app_logger.trace("uuidcode={} - Results: {}".format(uuidcode, results))
-    ret = []
-    for result in results:
-        ret.append(result[0])
-    return ret
+    return results
 
 def get_entry_servername(app_logger, uuidcode, servername, database):
     # return list of results
