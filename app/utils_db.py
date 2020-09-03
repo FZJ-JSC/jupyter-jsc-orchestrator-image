@@ -28,10 +28,10 @@ def get_all_servernames(app_logger, uuidcode, username, database):
         with closing(con.cursor()) as cur: # auto closes
             with con: # auto commit
                 #servername, jhubtoken, system, port, account, project, partition, reservation, Checkboxes, Resources, kernelurl, filesurl, spawning, skip, date
-                cmd = "SELECT servername FROM server WHERE username LIKE %s"
+                cmd = "SELECT servername FROM server WHERE servername LIKE %s"
                 app_logger.trace("uuidcode={} - Execute: {}, username: {}".format(uuidcode, cmd, username))
                 cur.execute(cmd,
-                            (username, ))
+                            ("{}:%".format(username), ))
                 results = cur.fetchall()
                 app_logger.trace("uuidcode={} - Results: {}".format(uuidcode, results))
     ret = []
@@ -50,10 +50,10 @@ def get_servername_tunnelup_for_user(app_logger, uuidcode, username, database):
         with closing(con.cursor()) as cur: # auto closes
             with con: # auto commit
                 #servername, jhubtoken, system, port, account, project, partition, reservation, Checkboxes, Resources, kernelurl, filesurl, spawning, skip, date
-                cmd = "SELECT servername, tunnelup FROM server WHERE username LIKE %s"
+                cmd = "SELECT servername, tunnelup FROM server WHERE servername LIKE %s"
                 app_logger.trace("uuidcode={} - Execute: {}, username: {}".format(uuidcode, cmd, username))
                 cur.execute(cmd,
-                            (username, ))
+                            ("{}:%".format(username), ))
                 results = cur.fetchall()
                 app_logger.trace("uuidcode={} - Results: {}".format(uuidcode, results))
     ret = []
@@ -72,10 +72,10 @@ def get_serverinfos_for_user(app_logger, uuidcode, username, database):
         with closing(con.cursor()) as cur: # auto closes
             with con: # auto commit
                 #servername, jhubtoken, system, port, account, project, partition, reservation, Checkboxes, Resources, kernelurl, filesurl, spawning, skip, date
-                cmd = "SELECT servername, system, hostname, port, tunnelup FROM server WHERE username LIKE %s"
+                cmd = "SELECT servername, system, hostname, port, tunnelup FROM server WHERE servername LIKE %s"
                 app_logger.trace("uuidcode={} - Execute: {}, username: {}".format(uuidcode, cmd, username))
                 cur.execute(cmd,
-                            (username, ))
+                            ("{}:%".format(username), ))
                 results = cur.fetchall()
                 app_logger.trace("uuidcode={} - Results: {}".format(uuidcode, results))
     ret = []
