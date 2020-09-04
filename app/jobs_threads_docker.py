@@ -174,7 +174,7 @@ def start_docker_new(app_logger, uuidcode, app_database, request_headers, port, 
         "Intern-Authorization": docker_master_token,
         "uuidcode": uuidcode,
         "accesstoken": accesstoken,
-        "expire": expire,
+        "expire": str(expire),
         "servicelevel": servicelevel
         }
     body = {
