@@ -129,7 +129,7 @@ def get_entry_port(app_logger, uuidcode, port, database):
     return results
 
 def set_tunnelup(app_logger, uuidcode, servername, database, value):
-    app_logger.debug("uuidcode={} - Set skip for userserver={} to {}".format(uuidcode, servername, value))
+    app_logger.debug("uuidcode={} - Set tunnelup for userserver={} to {}".format(uuidcode, servername, value))
     with closing(psycopg2.connect(host=database.get('host'),
                                   port=database.get('port'),
                                   user=database.get('user'),
