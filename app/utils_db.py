@@ -226,7 +226,7 @@ def create_entry_docker(app_logger, uuidcode, database, servername, jhubtoken, p
                 cur.execute(cmd, (servername,
                                   jhubtoken,
                                   "docker",
-                                  "unknown",
+                                  uuidcode,
                                   port,
                                   "true",
                                   dockerimage,
