@@ -7,6 +7,7 @@ from contextlib import closing
 from app import jobs_threads_unicore_utils, utils_hub_update, utils_common, jobs_threads, utils_db,\
     utils_file_loads
 from app.utils_common import SpawnException
+from time import sleep
 
 def check_unicore_job_status(app_logger, uuidcode, app_urls, app_database, request_headers, escapedusername, servername, server_info):
     try:
@@ -125,6 +126,9 @@ def start_unicore_job(app_logger, uuidcode, request_headers, request_json, app_u
         else:
             error_msg = "A mandatory backend service for {} had a problem. An administrator is informed".format(request_json.get('system'))
         app_logger.exception("uuidcode={} - error_msg: {} -  Could not create Header. Send Cancel to JupyterHub and stop function. {} {}".format(uuidcode, error_msg, utils_common.remove_secret(request_headers), app_urls.get('hub', {}).get('url_token')))
+        # Sleep 3 seconds. If we update JupyterHub to fast, the user will not see it (Because the spawning site with the progressbar has not been opened).
+        # So let's wait 3 seconds before informing JHub.
+        sleep(3)
         utils_hub_update.cancel(app_logger,
                                 uuidcode,
                                 app_urls.get('hub', {}).get('url_proxy_route'),
@@ -187,6 +191,9 @@ def start_unicore_job(app_logger, uuidcode, request_headers, request_json, app_u
         else:
             error_msg = "A mandatory backend service for {} had a problem. An administrator is informed".format(request_json.get('system'))
         app_logger.exception("uuidcode={} - error_msg: {} -  J4J_UNICORE communication failed. {} {}".format(uuidcode, error_msg, method, utils_common.remove_secret(method_args)))
+        # Sleep 3 seconds. If we update JupyterHub to fast, the user will not see it (Because the spawning site with the progressbar has not been opened).
+        # So let's wait 3 seconds before informing JHub.
+        sleep(3)
         utils_hub_update.cancel(app_logger,
                                 uuidcode,
                                 app_urls.get('hub', {}).get('url_proxy_route'),
@@ -240,6 +247,9 @@ def start_unicore_job(app_logger, uuidcode, request_headers, request_json, app_u
         else:
             error_msg = "A mandatory backend service for {} had a problem. An administrator is informed".format(request_json.get('system'))
         app_logger.exception("uuidcode={} - error-msg: {} - J4J_UNICORE communication failed. Send errorcode 526 to JupyterHub.cancel. {} {}".format(uuidcode, error_msg, method, utils_common.remove_secret(method_args)))
+        # Sleep 3 seconds. If we update JupyterHub to fast, the user will not see it (Because the spawning site with the progressbar has not been opened).
+        # So let's wait 3 seconds before informing JHub.
+        sleep(3)
         utils_hub_update.cancel(app_logger,
                                 uuidcode,
                                 app_urls.get('hub', {}).get('url_proxy_route'),
